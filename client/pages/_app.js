@@ -1,6 +1,7 @@
-import "bootstrap/dist/css.bootstrap.css";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
-export default ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }) => {
   return <Component {...pageProps} />;
 };
-  
+
+export default MyApp;

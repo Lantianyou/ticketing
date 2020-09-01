@@ -1,18 +1,19 @@
 import { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 
-export default () => {
+const signUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
-		const response = await axios.post({
-			email, password
-		});
+    const response = await axios.post("/api/users/signup", {
+      email,
+      password,
+    });
 
-		console.log(response.data);
+    console.log(response.data);
   };
   return (
     <form onSubmit={onSubmit}>
@@ -26,7 +27,7 @@ export default () => {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="">邮箱</label>
+        <label htmlFor="">密码</label>
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -34,7 +35,9 @@ export default () => {
           type="password"
         />
       </div>
-      <div className="btn btn-primary">Sign up</div>
+      <div className="btn btn-primary">注册·</div>
     </form>
   );
 };
+
+export default signUp;
