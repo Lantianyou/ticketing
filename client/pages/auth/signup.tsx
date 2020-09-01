@@ -1,20 +1,23 @@
 import { useState } from "react";
-import axios from "axios";
+import useRequest from "../../hooks/useRequest";
 
 const signUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { doRequest, errors } = useRequest({
+    url: "/api/users/signup",
+    method: "POST",
+    body: {
+      email,
+      password,
+    },
+  });
 
   const onSubmit = async (event) => {
     event.preventDefault();
-
-    const response = await axios.post("/api/users/signup", {
-      email,
-      password,
-    });
-
-    console.log(response.data);
+    doRequest();
   };
+  console.log(errors);
   return (
     <form onSubmit={onSubmit}>
       <h1>Sign up</h1>
@@ -35,7 +38,8 @@ const signUp = () => {
           type="password"
         />
       </div>
-      <div className="btn btn-primary">注册·</div>
+      {errors}
+      <button className="btn btn-primary">注册</button>
     </form>
   );
 };
