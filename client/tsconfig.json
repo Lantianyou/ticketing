@@ -21,7 +21,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx", "hooks/useRequest.js"
   ],
   "exclude": [
     "node_modules"

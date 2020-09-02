@@ -1,23 +1,25 @@
 import { useState } from "react";
+import Router from "next/router";
 import useRequest from "../../hooks/useRequest";
 
-const signUp = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { doRequest, errors } = useRequest({
-    url: "/api/users/signup",
+    url: "/api/users/signUp",
     method: "POST",
     body: {
       email,
       password,
     },
+    onSuccess: () => Router.push("/"),
   });
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    doRequest();
+
+    await doRequest();
   };
-  console.log(errors);
   return (
     <form onSubmit={onSubmit}>
       <h1>Sign up</h1>
@@ -44,4 +46,4 @@ const signUp = () => {
   );
 };
 
-export default signUp;
+export default SignUp;
