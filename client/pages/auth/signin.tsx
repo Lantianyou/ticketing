@@ -6,7 +6,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { doRequest, errors } = useRequest({
-    url: "/api/users/signup",
+    url: "/api/users/signin",
     method: "POST",
     body: {
       email,
@@ -20,10 +20,9 @@ const SignUp = () => {
 
     await doRequest();
   };
-  console.log(errors.response);
   return (
     <form onSubmit={onSubmit}>
-      <h1>Sign up</h1>
+      <h1>Sign In</h1>
       <div className="form-group">
         <label htmlFor="">邮箱</label>
         <input
@@ -41,8 +40,8 @@ const SignUp = () => {
           type="password"
         />
       </div>
-      {/* {errors} */}
-      <button className="btn btn-primary">注册</button>
+      {errors}
+      <button className="btn btn-primary">登陆</button>
     </form>
   );
 };

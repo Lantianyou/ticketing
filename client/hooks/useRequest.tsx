@@ -9,10 +9,7 @@ const useRequest = ({
 }: {
   url: string;
   method: string;
-  body: {
-    email: string;
-    password: string;
-  };
+  body: object;
   onSuccess?;
 }) => {
   const [errors, setErrors] = useState(null);
@@ -27,16 +24,17 @@ const useRequest = ({
       }
       return response.data;
     } catch (err) {
-      setErrors(
-        <div className="alert alert-danger">
-          <h4>Ooops....</h4>
-          <ul className="my-0">
-            {err.response.data.errors.map((err) => (
-              <li key={err.message}>{err.message}</li>
-            ))}
-          </ul>
-        </div>
-      );
+      // setErrors(
+      //   <div className="alert alert-danger">
+      //     <h4>Ooops....</h4>
+      //     <ul className="my-0">
+      //       {err.response.data.errors.map((err) => (
+      //         <li key={err.message}>{err.message}</li>
+      //       ))}
+      //     </ul>
+      //   </div>
+      // );
+      setErrors(err);
     }
   };
 

@@ -1,3 +1,4 @@
 .DS_Store
 */.next
+*/.git
 */node_modules
