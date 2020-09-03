@@ -1,8 +1,11 @@
 import request from "supertest";
 import { app } from "../../app";
+import mongoose from "mongoose";
 
 it("returns 404 if not found", async () => {
-  await request(app).get("/api/tickets/fakeid").send().expect(404);
+  const id = new mongoose.Types.ObjectId().toHexString();
+
+  await request(app).get(`/api/tickets/${id}`).send().expect(404);
 });
 
 it("returns ticket if found", async () => {
