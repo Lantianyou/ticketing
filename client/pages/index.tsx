@@ -12,10 +12,10 @@ const Index = ({ currentUser }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const client = buildClient(context);
   const { data } = await client.get("/api/users/currentuser");
-
+  const { currentUser } = data;
   return {
     props: {
-      data,
+      currentUser,
     },
   };
 };

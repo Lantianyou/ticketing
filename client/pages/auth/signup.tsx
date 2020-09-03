@@ -7,7 +7,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const { doRequest, errors } = useRequest({
     url: "/api/users/signup",
-    method: "POST",
+    method: "post",
     body: {
       email,
       password,
@@ -20,7 +20,6 @@ const SignUp = () => {
 
     await doRequest();
   };
-  console.log(errors.response);
   return (
     <form onSubmit={onSubmit}>
       <h1>Sign up</h1>
@@ -41,7 +40,7 @@ const SignUp = () => {
           type="password"
         />
       </div>
-      {/* {errors} */}
+      {errors}
       <button className="btn btn-primary">注册</button>
     </form>
   );

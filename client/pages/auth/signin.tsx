@@ -7,7 +7,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const { doRequest, errors } = useRequest({
     url: "/api/users/signin",
-    method: "POST",
+    method: "post",
     body: {
       email,
       password,
