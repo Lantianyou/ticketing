@@ -1,31 +1,41 @@
-import nats, { Message } from 'node-nats-streaming'
-import {randomBytes} from 'crypto'
+import nats, { Message } from "node-nats-streaming";
+import { randomBytes } from "crypto";
 
-const stan = nats.connect('ticketing', randomBytes(4).toString('hex'), {
-  url:'http://localhost:4222'
-})
+console.clear();
 
-stan.on('connect', () => {
-  console.log('Listener connected to NATS')
+const stan = nats.connect("ticketing", randomBytes(4).toString("hex"), {
+  url: "http://localhost:4222",
+});
 
-  stan.on('close', () => {
-    console.log("NATS streaming closed")
-    process.exit()
-  })
+stan.on("connect", () => {
+  console.log("Listener connected to NATS");
 
-  const options = stan.subscriptionOptions().setManualAckMode(true)
+  stan.on("close", () => {
+    console.log("NATS streaming closed");
+    process.exit();
+  });
 
-  const subscription = stan.subscribe('ticket:created', 'orders-service-queue-group', options)
+  const options = stan
+    .subscriptionOptions()
+    .setManualAckMode(true)
+    .setDeliverAllAvailable()
+    .setDurableName("accounting-service");
 
-  subscription.on('message', (msg:Message) => {
-    const data = msg.getData()
-    if (typeof data === 'string') {
-      console.log(`Received event #${msg.getSequence()}, ${data}`)
+  const subscription = stan.subscribe(
+    "ticket:created",
+    "queue-group-name",
+    options
+  );
+
+  subscription.on("message", (msg: Message) => {
+    const data = msg.getData();
+    if (typeof data === "string") {
+      console.log(`Received event #${msg.getSequence()}, ${data}`);
     }
 
-    msg.ack()
-  })
-})
+    msg.ack();
+  });
+});
 
-process.on('SIGINT', () => stan.close)
-process.on('SIGTERM', () => stan.close)
+process.on("SIGINT", () => stan.close);
+process.on("SIGTERM", () => stan.close);
