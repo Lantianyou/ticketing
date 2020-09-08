@@ -9,6 +9,3 @@ jobs:
     steps: 
       - uses: actions/checkout@v2
       - run: cd auth && npm i && npm run test:ci
-  
-  
-  
