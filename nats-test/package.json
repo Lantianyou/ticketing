@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  	"publish":"ts-node-dev --notify false src/publisher.ts",
-		"listen": "ts-node-dev --notify false src/listener.ts"
-	},
+    "publish": "ts-node-dev --notify false src/publisher.ts",
+    "listen": "ts-node-dev --notify false src/listener.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
