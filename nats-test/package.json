@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@lanxtianyou/common": "^1.0.17",
     "@types/node": "^14.6.4",
     "node-nats-streaming": "^0.3.2",
     "ts-node-dev": "^1.0.0-pre.62",
