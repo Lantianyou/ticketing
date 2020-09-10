@@ -1,9 +1,11 @@
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import { GetServerSideProps } from "next";
 import type { AppProps } from "next/app";
 import buildClient from "../api/build-client";
 import Header from "../components/header";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  console.log(pageProps);
   let currentUser = pageProps ? pageProps.currentUser : null;
   return (
     <>
@@ -15,18 +17,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-MyApp.getInitialProps = async (appContext) => {
-  const client = buildClient(appContext.ctx);
+export const getServerSideProps: GetServerSideProps = async (appContext) => {
+  const client = buildClient(appContext);
   const { data } = await client.get("/api/users/currentuser");
+  console.log(data);
 
   let pageProps = {};
-  if (appContext.Component.getInitialProps) {
-    pageProps = await appContext.Component.getInitialProps(
-      appContext.ctx,
-      client,
-      data.currentUser
-    );
-  }
 
   return {
     pageProps,

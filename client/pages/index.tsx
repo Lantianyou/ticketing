@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 const Index = ({ currentUser }) => {
   return currentUser ? (
     <h1>You are signed in</h1>
@@ -6,8 +7,11 @@ const Index = ({ currentUser }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context, client, currentUser) => {
-  return { };
-};
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const res = await fetch("https://ticketing.dev/api/users/currentuser");
+//   const data = res.json();
+//   console.log(data);
+//   return { props: {} };
+// };
 
 export default Index;

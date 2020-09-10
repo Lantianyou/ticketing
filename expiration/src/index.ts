@@ -1,4 +1,3 @@
-import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
 
 // 没有顶级await
