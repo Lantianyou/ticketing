@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-jest.mock("../__mocks__/nats-wrapper.ts");
+jest.mock("../nats-wrapper.ts");
 
 let mongo: any;
 beforeAll(async () => {
