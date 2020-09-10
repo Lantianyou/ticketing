@@ -1,9 +1,32 @@
 import express, { Request, Response } from "express";
+import { Order, OrderStatus } from "../models/order";
+import {
+  requireAuth,
+  NotFoundError,
+  NotAuthorizedError,
+} from "@lanxtianyou/common";
 
 const router = express.Router();
 
-router.delete("/api/orders/:orderId", async (req: Request, res: Response) => {
-  res.send({});
-});
+router.delete(
+  "/api/orders/:orderId",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const { orderId } = req.params;
+    const order = await Order.findById(orderId);
+    if (!order) {
+      throw new NotFoundError();
+    }
+    if (order.userId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
+    }
+    order.status = OrderStatus.Canclled;
+    await order.save();
 
-export { router as  deleteOrderRouter };
+    // publish an evnet
+
+    res.status(204).send(order);
+  }
+);
+
+export { router as deleteOrderRouter };
