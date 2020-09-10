@@ -6,7 +6,7 @@ const Index = ({ currentUser }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context, client, currentUser) => {
   return { };
 };
 
