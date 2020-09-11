@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
+import { idText } from "typescript";
 import { Order, OrderStatus } from "./order";
 
 interface TicketAttrs {
@@ -53,6 +54,13 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
     _id: attrs.id,
     title: attrs.title,
     price: attrs.price,
+  });
+};
+
+ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+  return Ticket.findOne({
+    _id: event.id,
+    version: event.version,
   });
 };
 
