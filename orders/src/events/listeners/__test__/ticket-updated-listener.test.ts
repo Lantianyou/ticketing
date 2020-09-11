@@ -6,9 +6,10 @@ import { natsWrapper } from "../../../nats-wrapper";
 import { Ticket } from "../../../models/ticket";
 
 const setUp = async () => {
-  // create an instance of the listener
+  // Create a listener
   const listener = new TicketUpdatedListener(natsWrapper.client);
-  // create a fake data event
+
+  // Create and save a ticket
   const ticket = Ticket.build({
     id: mongoose.Types.ObjectId().toHexString(),
     title: "tenet",
@@ -16,20 +17,23 @@ const setUp = async () => {
   });
   await ticket.save();
 
+  // Create a fake data object
   const data: TicketUpdatedEvent["data"] = {
     id: ticket.id,
     version: ticket.version + 1,
-    title: ticket.title,
-    price: 42,
-    userId: "userid",
+    title: "new concert",
+    price: 999,
+    userId: "ablskdjf",
   };
-  // create a fake message
+
+  // Create a fake msg object
   // @ts-ignore
   const msg: Message = {
     ack: jest.fn(),
   };
 
-  return { ticket, data, msg, listener };
+  // return all of this stuff
+  return { msg, data, ticket, listener };
 };
 
 it("finds, updates, and saves a ticket", async () => {
