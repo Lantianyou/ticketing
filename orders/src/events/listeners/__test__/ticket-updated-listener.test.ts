@@ -38,7 +38,6 @@ const setUp = async () => {
 
 it("finds, updates, and saves a ticket", async () => {
   const { ticket, data, msg, listener } = await setUp();
-  data.version -= 1;
 
   await listener.onMessage(data, msg);
 
@@ -47,13 +46,11 @@ it("finds, updates, and saves a ticket", async () => {
   expect(updatedTicket!.title).toEqual(data.title);
   expect(updatedTicket!.price).toEqual(data.price);
 
-  data.version = 1;
   expect(updatedTicket!.version).toEqual(data.version);
 });
 
 it("acks the message", async () => {
   const { data, msg, listener } = await setUp();
-  data.version -= 1;
 
   await listener.onMessage(data, msg);
 
