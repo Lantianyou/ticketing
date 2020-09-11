@@ -25,7 +25,6 @@ const useRequest = ({
 
       return response.data;
     } catch (err) {
-      console.log(err);
       setErrors(
         <div className="alert alert-danger">
           <h4>Ooops....</h4>

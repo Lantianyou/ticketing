@@ -1,9 +1,6 @@
 import Link from "next/link";
-import { GetServerSideProps } from "next";
-import BuildClient from "../api/build-client";
 
-const Header = () => {
-  let currentUser = undefined;
+const Header = ({ currentUser }) => {
   const links = [
     !currentUser && { label: "注册", href: "/auth/signup" },
     !currentUser && { label: "登陆", href: "/auth/signin" },
@@ -30,16 +27,6 @@ const Header = () => {
       </div>
     </nav>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const client = BuildClient(context);
-  console.log("!!!");
-  const { currentUser } = await client.get("/api/currentUser");
-  console.log(currentUser);
-  return {
-    props: { currentUser },
-  };
 };
 
 export default Header;
