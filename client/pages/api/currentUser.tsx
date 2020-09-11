@@ -15,10 +15,11 @@ function buildClient(req) {
   }
 }
 
-const currentUser = async (req: NextApiRequest, res: NextApiResponse) => {
+const current = async (req: NextApiRequest, res: NextApiResponse) => {
   const client = buildClient(req);
-  // const data = await client.get("/api/auth/currentUser");
-  return res.status(200).json({ name: "John Doe" });
+  const { data } = await client.get("/api/users/currentUser");
+  const { currentUser } = data;
+  return res.status(200).json({ name: "John Doe", ...currentUser });
 };
 
-export default currentUser;
+export default current;
