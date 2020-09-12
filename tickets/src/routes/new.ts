@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import mongoose from "mongoose";
 import { body } from "express-validator";
 import { requireAuth, validateRequest } from "@lanxtianyou/common";
 import { Ticket } from "../models/ticket";
@@ -16,10 +17,10 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    
     const { title, price } = req.body;
 
     const ticket = Ticket.build({
+      id: mongoose.Types.ObjectId().toHexString(),
       title,
       price,
       userId: req.currentUser!.id,
@@ -30,8 +31,8 @@ router.post(
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
-			version: ticket.version,
-		});
+      version: ticket.version,
+    });
 
     res.status(201).send(ticket);
   }

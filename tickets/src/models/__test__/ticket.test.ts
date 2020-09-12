@@ -1,8 +1,10 @@
+import mongoose from "mongoose";
 import { Ticket } from "../ticket";
 
 it("implements optimistic concurrency control", async (done) => {
   // create an instance of a ticket
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "title",
     price: 5,
     userId: "123",
@@ -33,6 +35,7 @@ it("implements optimistic concurrency control", async (done) => {
 
 it("increments the version number on multiple saves", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "tenet",
     price: 42,
     userId: "abc",
