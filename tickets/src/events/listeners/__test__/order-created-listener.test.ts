@@ -4,7 +4,6 @@ import { Ticket } from "../../../models/ticket";
 import { OrderCreatedEvent, OrderStatus } from "@lanxtianyou/common";
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
-import { TicketUpdatedPublisher } from "../../publishers/ticket-updated-publisher";
 
 const setup = async () => {
   // create an instance of listener
