@@ -11,6 +11,7 @@ const setup = async () => {
   const listener = new OrderCreatedListener(natsWrapper.client);
   // create and save a ticket
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "tenet",
     price: 42,
     userId: "userId",
