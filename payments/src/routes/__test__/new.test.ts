@@ -4,6 +4,7 @@ import { OrderStatus } from "@lanxtianyou/common";
 import { app } from "../../app";
 import { Order } from "../../models/order";
 import { stripe } from "../../stripe";
+import { Payment } from "../../models/payments";
 
 jest.mock("../../stripe.ts");
 
@@ -85,7 +86,19 @@ it("returns 204 with valid inputs", async () => {
     .expect(204);
 
   const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
+  const stripeCharges = await stripe.charges.list({ limit: 50 });
+  const stripeCharge = stripeCharges.data.find(
+    (charge) => charge.amount === price * 100
+  );
+
   expect(chargeOptions.source).toEqual("tok_visa");
   expect(chargeOptions.amount).toEqual(price * 100);
   expect(chargeOptions.currency).toEqual("usd");
+
+  const payment = await Payment.findOne({
+    orderId: order.id,
+    stripeId: stripeCharge!.id,
+  });
+
+  expect(payment).not.toBeNull();
 });
