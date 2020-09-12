@@ -6,6 +6,7 @@ import {
   NotFoundError,
   requireAuth,
   NotAuthorizedError,
+  BadRequestError,
 } from "@lanxtianyou/common";
 import { Ticket } from "../models/ticket";
 
@@ -25,6 +26,10 @@ router.put(
       throw new NotFoundError();
     }
 
+    if (ticket.orderId) {
+      throw new BadRequestError("cannot edit a reserved ticket");
+    }
+
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
@@ -37,8 +42,8 @@ router.put(
 
     new TicketUpdatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
-    	version: ticket.version,
-			title: ticket.title,
+      version: ticket.version,
+      title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
     });
