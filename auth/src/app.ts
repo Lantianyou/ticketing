@@ -10,7 +10,9 @@ import { errorHandler, NotFoundError } from "@lanxtianyou/common";
 
 const app = express();
 app.set("trust proxy", true);
+// body-parser作用：Parse incoming req.body in a middleware before your handlers
 app.use(json());
+// 通过签名 Cookie 获得对一组文件的限时资源访问权限。
 app.use(
   cookieSession({
     signed: false,

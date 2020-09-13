@@ -44,13 +44,13 @@ const start = async () => {
       useCreateIndex: true,
     });
 
-    console.log("Connected to mongo");
+    console.log("已连接MongoDB");
   } catch (err) {
     console.error(err);
   }
 
   app.listen(3000, () => {
-    console.log("listening in port 3000");
+    console.log("tickets服务已启动，监听于端口3000");
   });
 };
 

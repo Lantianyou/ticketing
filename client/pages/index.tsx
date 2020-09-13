@@ -8,9 +8,11 @@ const LandingPage = ({ tickets }) => {
       <tr key={ticket.id}>
         <td>{ticket.title}</td>
         <td>{ticket.price}</td>
-        <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
-          <a href="">view</a>
-        </Link>
+        <td>
+          <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
+            <a>view</a>
+          </Link>
+        </td>
       </tr>
     );
   });

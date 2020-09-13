@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import { app } from "./app";
 
-// 没有顶级await
+// 没有顶级await，start作为wrapper
+const PORT = 3000;
 const start = async () => {
   if (!process.env.JWT_KEY) {
     throw new Error("JWT_KEY must be defined");
@@ -16,13 +17,13 @@ const start = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-    console.log("Connected to mongo");
+    console.log("已连接MongoDB");
   } catch (err) {
     console.error(err);
   }
 
-  app.listen(3000, () => {
-    console.log("listening in port 3000");
+  app.listen(PORT, () => {
+    console.log(`auth服务已启动，监听于端口${PORT}`);
   });
 };
 
