@@ -35,7 +35,6 @@ const useRequest = ({
           </ul>
         </div>
       );
-      // setErrors(err);
     }
   };
 

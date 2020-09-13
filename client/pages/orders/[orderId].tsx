@@ -1,3 +1,5 @@
+import { GetServerSideProps } from "next";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import Router from "next/router";
@@ -46,11 +48,20 @@ const OrderShow = ({ order, currentUser }) => {
   );
 };
 
-OrderShow.getInitialProps = async (context, client) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { orderId } = context.query;
-  const { data } = await client.get(`/api/orders/${orderId}`);
 
-  return { order: data };
+  const client = axios.create({
+    baseURL: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+    headers: context.req.headers,
+  });
+
+  const { data: order } = await client.get(`/api/orders/${orderId}`);
+  return {
+    props: {
+      order,
+    },
+  };
 };
 
 export default OrderShow;

@@ -23,7 +23,7 @@ export default () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <h1>Sign In</h1>
+      <h1>登陆</h1>
       <div className="form-group">
         <label>Email Address</label>
         <input
@@ -33,7 +33,7 @@ export default () => {
         />
       </div>
       <div className="form-group">
-        <label>Password</label>
+        <label>密码</label>
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -42,7 +42,7 @@ export default () => {
         />
       </div>
       {errors}
-      <button className="btn btn-primary">Sign In</button>
+      <button className="btn btn-primary">登陆</button>
     </form>
   );
 };

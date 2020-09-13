@@ -1,6 +1,8 @@
+import axios from "axios";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser }: { currentUser? }) => {
   const links = [
     !currentUser && { label: "注册", href: "/auth/signup" },
     !currentUser && { label: "登陆", href: "/auth/signin" },
@@ -29,6 +31,20 @@ const Header = ({ currentUser }) => {
       </div>
     </nav>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const client = axios.create({
+    baseURL: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+    headers: context.req.headers,
+  });
+
+  const { data: currentUser } = await client.get(`/api/users/currentuser`);
+  return {
+    props: {
+      currentUser,
+    },
+  };
 };
 
 export default Header;

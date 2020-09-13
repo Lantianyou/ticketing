@@ -1,3 +1,6 @@
+import { GetServerSideProps } from "next";
+import axios from "axios";
+
 const OrderIndex = ({ orders }) => {
   return (
     <ul>
@@ -12,10 +15,18 @@ const OrderIndex = ({ orders }) => {
   );
 };
 
-OrderIndex.getInitialProps = async (context, client) => {
-  const { data } = await client.get("/api/orders");
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const client = axios.create({
+    baseURL: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+    headers: context.req.headers,
+  });
 
-  return { orders: data };
+  const { data: orders } = await client.get("/api/orders");
+  return {
+    props: {
+      orders,
+    },
+  };
 };
 
 export default OrderIndex;

@@ -1,3 +1,5 @@
+import { GetServerSideProps } from "next";
+import axios from "axios";
 import Router from "next/router";
 import useRequest from "../../hooks/use-request";
 
@@ -24,11 +26,21 @@ const TicketShow = ({ ticket }) => {
   );
 };
 
-TicketShow.getInitialProps = async (context, client) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { ticketId } = context.query;
-  const { data } = await client.get(`/api/tickets/${ticketId}`);
 
-  return { ticket: data };
+  const client = axios.create({
+    baseURL: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+    headers: context.req.headers,
+  });
+
+  const { data: ticket } = await client.get(`/api/tickets/${ticketId}`);
+
+  return {
+    props: {
+      ticket,
+    },
+  };
 };
 
 export default TicketShow;
