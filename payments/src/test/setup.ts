@@ -15,9 +15,9 @@ declare global {
 jest.mock("../nats-wrapper");
 
 let mongo: any;
+process.env.STRIPE_KEY = "sk_test_MRbHJSBdePhijm7eof5kFv6e00fLhIvDwG";
 beforeAll(async () => {
   process.env.JWT_KEY = "asdf";
-  process.env.STRIPE_KEY = "sk_test_MRbHJSBdePhijm7eof5kFv6e00fLhIvDwG";
 
   mongo = new MongoMemoryServer();
   const mongoUri = await mongo.getUri();
@@ -43,20 +43,24 @@ afterAll(async () => {
 });
 
 global.signin = (id?: string) => {
-  // JWT payload {id, email}
+  // Build a JWT payload.  { id, email }
   const payload = {
     id: id || new mongoose.Types.ObjectId().toHexString(),
-    email: "test@email.com",
+    email: "test@test.com",
   };
-  // create JWT
+
+  // Create the JWT!
   const token = jwt.sign(payload, process.env.JWT_KEY!);
-  // Build session Onject {jwt: ...}
+
+  // Build session Object. { jwt: MY_JWT }
   const session = { jwt: token };
-  // JSON encode to base64
+
+  // Turn that session into JSON
   const sessionJSON = JSON.stringify(session);
 
+  // Take JSON and encode it as base64
   const base64 = Buffer.from(sessionJSON).toString("base64");
-  // return string
-  // {"jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNTA1M2NhM2E2MDQ0MDAxODFiNzA2NSIsImVtYWlsIjoidGVzdDFAZW1haWwuY29tIiwiaWF0IjoxNTk5MDk5OTU2fQ.FEjsz5VOX2MIPWIu0eXdE_M0S5ge_MgaXNsiqfONR5I"}
+
+  // return a string thats the cookie with the encoded data
   return [`express:sess=${base64}`];
 };
