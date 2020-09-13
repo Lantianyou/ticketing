@@ -1,24 +1,9 @@
 import { useEffect, useState } from "react";
-import Router from "next/router";
-import { GetServerSideProps } from "next";
 import StripeCheckout from "react-stripe-checkout";
-import BuildClient from "../../api/build-client";
-import useRequest from "../../hooks/useRequest";
+import Router from "next/router";
+import useRequest from "../../hooks/use-request";
 
-type Props = {
-  order: {
-    id: string;
-    expiresAt: string;
-    ticket: {
-      price: number;
-    };
-  };
-  currentUser: {
-    email: string;
-  };
-};
-
-const OrderShow = ({ order }: Props) => {
+const OrderShow = ({ order, currentUser }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const { doRequest, errors } = useRequest({
     url: "/api/payments",
@@ -37,40 +22,35 @@ const OrderShow = ({ order }: Props) => {
 
     findTimeLeft();
     const timerId = setInterval(findTimeLeft, 1000);
+
     return () => {
       clearInterval(timerId);
     };
   }, []);
 
   if (timeLeft < 0) {
-    return <div>Order expired</div>;
+    return <div>Order Expired</div>;
   }
 
   return (
     <div>
-      Order {timeLeft}秒后过期
+      Time left to pay: {timeLeft} seconds
       <StripeCheckout
-        token={({ id }) => console.log(id)}
-        stripeKey="pk_test_iYmPFYs3w5jTwXvbLEfGXHkr00s4iCVOcE"
+        token={({ id }) => doRequest({ token: id })}
+        stripeKey="pk_test_FlLFVapGHTly3FicMdTU06SC006tWtWbNH"
         amount={order.ticket.price * 100}
+        email={currentUser.email}
       />
       {errors}
     </div>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+OrderShow.getInitialProps = async (context, client) => {
   const { orderId } = context.query;
-  const client = BuildClient(context);
-  const { data: order } = await client.get(`/api/orders/${orderId}`);
-  const { data: currentUser } = await client.get(`/api/users/currentUser`);
+  const { data } = await client.get(`/api/orders/${orderId}`);
 
-  return {
-    props: {
-      order,
-      currentUser,
-    },
-  };
+  return { order: data };
 };
 
 export default OrderShow;
