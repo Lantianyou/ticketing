@@ -26,7 +26,7 @@ export class ExpirationCompleteListener extends Listener<
     }
 
     order.set({
-      status: OrderStatus.Canclled,
+      status: OrderStatus.Cancelled,
     });
     await order.save();
 

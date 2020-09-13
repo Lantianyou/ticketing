@@ -22,7 +22,7 @@ router.delete(
     if (order.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
-    order.status = OrderStatus.Canclled;
+    order.status = OrderStatus.Cancelled;
     await order.save();
 
     // publish an evnet
