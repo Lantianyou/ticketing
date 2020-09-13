@@ -4,6 +4,8 @@ const Header = ({ currentUser }) => {
   const links = [
     !currentUser && { label: "注册", href: "/auth/signup" },
     !currentUser && { label: "登陆", href: "/auth/signin" },
+    currentUser && { label: "Sell", href: "/tickets/new" },
+    currentUser && { label: "我的订单", href: "/orders" },
     currentUser && { label: "注销", href: "/auth/signout" },
   ]
     .filter((link) => link)

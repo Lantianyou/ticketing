@@ -28,11 +28,9 @@ router.post(
     if (!order) {
       throw new NotFoundError();
     }
-
     if (order.userId !== req.currentUser?.id) {
       throw new NotAuthorizedError();
     }
-
     if (order.status === OrderStatus.Cancelled) {
       throw new BadRequestError("cannot pay for an cancelled order");
     }
@@ -42,7 +40,6 @@ router.post(
       amount: order.price * 100,
       source: token,
     });
-
     const payment = Payment.build({
       orderId,
       stripeId: charge.id,
@@ -54,7 +51,7 @@ router.post(
       stripeId: payment.stripeId,
     });
 
-    res.status(204).send({ id: payment.id });
+    res.status(201).send({ id: payment.id });
   }
 );
 
