@@ -2,7 +2,7 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 
-const LandingPage = ({ tickets }) => {
+const LandingPage = ({ currentUser, tickets }) => {
   const ticketList = tickets.map((ticket) => {
     return (
       <tr key={ticket.id}>
@@ -34,18 +34,24 @@ const LandingPage = ({ tickets }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const client = axios.create({
-    baseURL: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
-    headers: context.req.headers,
-  });
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const client = axios.create({
+//     baseURL: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+//     headers: context.req.headers,
+//   });
 
-  const { data: tickets } = await client.get("/api/tickets");
-  return {
-    props: {
-      tickets,
-    },
-  };
+//   const { data: tickets } = await client.get("/api/tickets");
+//   return {
+//     props: {
+//       tickets,
+//     },
+//   };
+// };
+
+LandingPage.getInitialProps = async (context, client, currentUser) => {
+  const { data } = await client.get("/api/tickets");
+
+  return { tickets: data };
 };
 
 export default LandingPage;
