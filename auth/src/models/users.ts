@@ -5,7 +5,7 @@ interface UserAttrs {
   email: string;
   password: string;
 }
-// ts和mongoose
+// TypeScript和mongoose兼容性很差
 interface UserModel extends mongoose.Model<UserDoc> {
   build(attrs: UserAttrs): UserDoc;
 }
@@ -45,7 +45,7 @@ userSchema.pre("save", async function (done) {
   }
   done();
 });
-// UserModel
+
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };

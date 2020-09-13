@@ -4,13 +4,14 @@ import { body } from "express-validator";
 import { validateRequest, BadRequestError } from "@lanxtianyou/common";
 import { User } from "../models/users";
 import { Password } from "../services/password";
+
 const router = express.Router();
 
 router.post(
   "/api/users/signin",
   [
-    body("email").isEmail().withMessage("email"),
-    body("password").trim().notEmpty().withMessage("必须输入密码"),
+    body("email").isEmail().withMessage("请输入邮箱"),
+    body("password").trim().notEmpty().withMessage("请输入密码"),
     validateRequest,
   ],
   async (req: Request, res: Response) => {
@@ -30,7 +31,7 @@ router.post(
       throw new BadRequestError("Invalid credentials");
     }
 
-    // Generate JWT
+    // 生成JWT_KEY
     const userJwt = jwt.sign(
       {
         id: existingUser.id,
@@ -38,7 +39,7 @@ router.post(
       },
       process.env.JWT_KEY!
     );
-    // Store it on session
+    // 存储JWT_KEY于session
     req.session = {
       jwt: userJwt,
     };

@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
-
 import { validateRequest, BadRequestError } from "@lanxtianyou/common";
 import { User } from "../models/users";
 
@@ -28,7 +27,7 @@ router.post(
     const user = User.build({ email, password });
     await user.save();
 
-    // Generate JWT
+    // 生成JWT_KEY
     const userJwt = jwt.sign(
       {
         id: user.id,
@@ -36,7 +35,7 @@ router.post(
       },
       process.env.JWT_KEY!
     );
-    // Store it on session
+    // 存储JWT_KEY于session
     req.session = {
       jwt: userJwt,
     };
