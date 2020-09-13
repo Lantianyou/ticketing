@@ -49,11 +49,11 @@ const NewTicket = () => {
             className="form-control"
             onBlur={onBlur}
             value={price}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setPrice(e.target.value)}
           />
         </div>
         {errors}
-        <button className="btn btn-primary"></button>
+        <button className="btn btn-primary">创建</button>
       </form>
     </div>
   );
